@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, Linkedin, Mail, Phone, ExternalLink, Menu, X, Download, MapPin } from "lucide-react";
 import "./App.css";
-import "../public/resume.pdf"; // Ensure your resume is in the public folder or adjust the path accordingly
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
