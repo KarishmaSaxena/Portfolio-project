@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "index.js",
+  "type": "module",
+  "homepage": "https://karishmasaxena.github.io/my-portfolio-project",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,11 +19,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/KarishmaSaxena/portfolio-project/issues"
   },
-  "homepage": "https://karishmasaxena.github.io/portfolio-project",
   "dependencies": {
     "framer-motion": "^12.31.0",
     "lucide-react": "^0.563.0",
