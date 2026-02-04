@@ -2,16 +2,18 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, Linkedin, Mail, Phone, ExternalLink, Menu, X, Download, MapPin } from "lucide-react";
 import "./App.css";
+import "../public/resume.pdf"; // Ensure your resume is in the public folder or adjust the path accordingly
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
+  const [expandedSkills, setExpandedSkills] = useState(new Set());
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-      
+
       // Update active section based on scroll position
       const sections = ["home", "skills", "projects", "experience", "education"];
       for (const section of sections) {
@@ -38,6 +40,16 @@ function App() {
     setMobileMenuOpen(false);
   };
 
+  const toggleSkillExpansion = (index) => {
+    const newExpanded = new Set(expandedSkills);
+    if (newExpanded.has(index)) {
+      newExpanded.delete(index);
+    } else {
+      newExpanded.add(index);
+    }
+    setExpandedSkills(newExpanded);
+  };
+
   const navItems = [
     { id: "home", label: "Home" },
     { id: "skills", label: "Skills" },
@@ -47,6 +59,10 @@ function App() {
   ];
 
   const skills = [
+    {
+      category: "Machine Learning, NLP (Natural Language Processing)",
+      items: ["pandas", "numpy", "matplotlib", "scikit-learn", "sklearn", "Tokenization And Basic Terminologies", "Tokenization Practicals", "Text Preprocessing Stemming Using NLTK", "Text Preprocessing Lemmatization Using NLTK", "Stopwords", "Parts Of Speech", "Named Entity Recognition", "Different types Of Encoding", "Word Embedding", "Word2vec", "Skipgram Indepth Intuition", "Average Word2vec With Implementation"]
+    },
     {
       category: "Frontend Technologies",
       items: ["React", "JavaScript (ES6+)", "HTML5", "CSS3", "Redux"]
@@ -84,6 +100,14 @@ function App() {
       description: "Deployed library system with CRUD operations and role-based views. Features book tracking and user management.",
       technologies: ["React", "REST APIs", "State Management"],
       link: "https://library-management-jljkq17xa-karishmasaxenas-projects.vercel.app",
+      github: "#"
+    },
+    {
+      title: "TeamSync",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+      description: "Team collaboration and synchronization platform with modern UI and real-time features.",
+      technologies: ["React 18", "TypeScript", "Tailwind CSS", "FastAPI", "Python 3.9+", "PostgreSQL", "SQLAlchemy", "Pydantic"],
+      link: "https://team-sync-kk8ido7xa-karishmasaxenas-projects.vercel.app/",
       github: "#"
     }
   ];
@@ -128,7 +152,8 @@ function App() {
 
   const education = [
     {
-      degree: "B.Tech – Computer Science & Engineering",
+      degree: "B.Tech – Computer Science & Engineering ",
+      Specialization: "Artificial Intelligence & Machine Learning",
       institution: "Teerthanker Mahaveer University",
       year: "2025",
       grade: "CGPA: 8.3"
@@ -150,20 +175,20 @@ function App() {
   return (
     <div className="portfolio-container">
       {/* Header */}
-      <motion.header 
+      <motion.header
         className={`header ${scrolled ? 'scrolled' : ''}`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div className="header-content">
-          <motion.h1 
+          <motion.h1
             className="logo"
             whileHover={{ scale: 1.05 }}
           >
             Karishma Saxena
           </motion.h1>
-          
+
           {/* Desktop Navigation */}
           <nav className="nav-desktop">
             {navItems.map((item) => (
@@ -177,17 +202,8 @@ function App() {
             ))}
           </nav>
 
-          <a 
-            href="/resume.pdf" 
-            download
-            className="btn-primary desktop-only"
-          >
-            <Download size={18} />
-            Resume
-          </a>
-
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="mobile-menu-btn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
@@ -215,8 +231,8 @@ function App() {
                   {item.label}
                 </button>
               ))}
-              <a 
-                href="/resume.pdf" 
+              <a
+                href="/resume.pdf"
                 download
                 className="btn-primary-mobile"
               >
@@ -246,11 +262,9 @@ function App() {
               Hi, I'm
             </motion.div>
             <h1 className="hero-title">Karishma Saxena</h1>
-            <h2 className="hero-subtitle">Frontend Developer (React)</h2>
+            <h2 className="hero-subtitle">AI / Ml Engineer</h2>
             <p className="hero-description">
-              Frontend Developer with hands-on experience in building scalable, responsive, 
-              and user-centric web applications using React and JavaScript. Strong focus on 
-              performance, usability, clean UI, and enterprise-grade frontend solutions.
+              Dedicated AI/ML Engineer with hands-on experience in NLP, Classification, and Deep Learning models, complemented by expertise in building responsive, data-driven web applications using React and JavaScript. Skilled in data preprocessing, visualization, and deploying ML-powered solutions with seamless frontend integration.
             </p>
             <div className="hero-actions">
               <a href="mailto:saxenakarishma13@gmail.com" className="btn-primary">
@@ -282,7 +296,7 @@ function App() {
             <h2 className="section-title">Skills & Expertise</h2>
             <p className="section-subtitle">Technologies and tools I work with</p>
           </motion.div>
-          
+
           <div className="skills-grid">
             {skills.map((skillGroup, index) => (
               <motion.div
@@ -296,10 +310,18 @@ function App() {
               >
                 <h3 className="skill-category">{skillGroup.category}</h3>
                 <div className="skill-items">
-                  {skillGroup.items.map((skill, idx) => (
+                  {(expandedSkills.has(index) ? skillGroup.items : skillGroup.items.slice(0, 5)).map((skill, idx) => (
                     <span key={idx} className="skill-badge">{skill}</span>
                   ))}
                 </div>
+                {skillGroup.items.length > 5 && (
+                  <button
+                    className="btn-secondary skill-toggle-btn"
+                    onClick={() => toggleSkillExpansion(index)}
+                  >
+                    {expandedSkills.has(index) ? 'Show Less' : 'Show More'}
+                  </button>
+                )}
               </motion.div>
             ))}
           </div>
@@ -318,7 +340,7 @@ function App() {
             <h2 className="section-title">Featured Projects</h2>
             <p className="section-subtitle">Some of my recent work</p>
           </motion.div>
-          
+
           <div className="projects-grid">
             {projects.map((project, index) => (
               <motion.div
@@ -368,7 +390,7 @@ function App() {
             <h2 className="section-title">Work Experience</h2>
             <p className="section-subtitle">My professional journey</p>
           </motion.div>
-          
+
           <div className="experience-timeline">
             {experiences.map((exp, index) => (
               <motion.div
@@ -415,7 +437,7 @@ function App() {
             <h2 className="section-title">Education</h2>
             <p className="section-subtitle">Academic background</p>
           </motion.div>
-          
+
           <div className="education-grid">
             {education.map((edu, index) => (
               <motion.div
@@ -428,6 +450,7 @@ function App() {
                 whileHover={{ y: -5 }}
               >
                 <h3 className="education-degree">{edu.degree}</h3>
+                <span className="education-specialization">{edu.Specialization}</span>
                 <h4 className="education-institution">{edu.institution}</h4>
                 <div className="education-meta">
                   <span className="education-year">{edu.year}</span>
@@ -447,7 +470,7 @@ function App() {
               <h3 className="footer-name">Karishma Saxena</h3>
               <p className="footer-tagline">Frontend Developer | React Specialist</p>
             </div>
-            
+
             <div className="footer-links">
               <a href="mailto:saxenakarishma13@gmail.com" className="footer-link" aria-label="Email">
                 <Mail size={20} />
@@ -455,15 +478,24 @@ function App() {
               <a href="tel:+917522896206" className="footer-link" aria-label="Phone">
                 <Phone size={20} />
               </a>
-              <a href="https://www.linkedin.com/in/karishma-saxena" target="_blank" rel="noopener noreferrer" className="footer-link" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/karishma-saxena-a49134261/" target="_blank" rel="noopener noreferrer" className="footer-link" aria-label="LinkedIn">
                 <Linkedin size={20} />
               </a>
               <a href="https://github.com/karishmasaxena" target="_blank" rel="noopener noreferrer" className="footer-link" aria-label="GitHub">
                 <Github size={20} />
               </a>
+              <a
+                href="/resume.pdf"
+                download="Karishma_Saxena_Resume.pdf"
+                className="footer-link"
+                aria-label="Download Resume"
+                title="Download Resume"
+              >
+                <Download size={20} />
+              </a>
             </div>
           </div>
-          
+
           <div className="footer-bottom">
             <p>© 2025 Karishma Saxena. All rights reserved.</p>
           </div>
