@@ -36,5 +36,4 @@ tsconfig.*.json
 eslint.config.js
 .babelrc
 .babelrc.js
-public/
 
