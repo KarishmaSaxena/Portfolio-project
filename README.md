@@ -9,7 +9,7 @@ This portfolio project showcases a collection of my work and skills as a develop
 - Contact form for inquiries
 
 ## Deployment
-The project is deployed at [myportfolio-gules-tau-88.vercel.app](https://myportfolio-gules-tau-88.vercel.app).
+The project is deployed at [https://portfolio-six-ashy-23.vercel.app/]
 
 ## Tech Stack
 - HTML
